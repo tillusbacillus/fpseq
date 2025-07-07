@@ -28,7 +28,7 @@ def generate_labels(seq, mods=None, zeroindex=1):
 
 
 def from_fpbase(slug):
-    url = 'https://www.fpbase.org/api/{}/?format=json'.format(slugify(slug))
+    url = 'https://www.fpbase.org/api/proteins/?name__iexact={}&format=json'.format(slugify(slug))
     response = requests.get(url)
     return FPSeq(json.loads(response.content).get('seq'))
 

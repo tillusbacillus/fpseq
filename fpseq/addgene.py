@@ -182,7 +182,7 @@ def slugify(value, allow_unicode=False):
 
 
 def from_fpbase(slug):
-    url = 'https://www.fpbase.org/api/{}/?format=json'.format(slugify(slug))
+    url = 'https://www.fpbase.org/api/proteins/?name__iexact={}&format=json'.format(slugify(slug))
     response = requests.get(url)
     return json.loads(response.content).get('seq')
 
