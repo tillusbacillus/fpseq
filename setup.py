@@ -6,4 +6,7 @@ setup(
     description=" package for working with protein sequences and mutations, and FPbase API wrapper to retrieve fluorescent protein sequences Resources",
     packages=find_packages(),     # finds my_helpers
     python_requires=">=3.11.9",      # adjust as needed
+    install_requires=[
+          'parasail',
+      ],
 )
