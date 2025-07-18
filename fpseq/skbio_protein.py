@@ -92,7 +92,7 @@ class SkbSequence(object):
                 sequence = sequence.replace(' ', '').replace('\n', '')
                 sequence = sequence.encode("ascii")
 
-            s = np.fromstring(sequence, dtype=np.uint8)
+            s = np.frombuffer(sequence, dtype=np.uint8)
             if isinstance(sequence, np.generic) and len(s) != 1:
                 raise TypeError("Can cannot create a sequence with %r" %
                                 type(sequence).__name__)
@@ -132,7 +132,7 @@ class SkbSequence(object):
         return 'Protein\n' + '-' * 54 + '\n' + "\n".join(chunk_string(str(self), 10, 55))
 
     def __str__(self):
-        return str(self._bytes.tostring().decode("ascii"))
+        return str(self._bytes.tobytes().decode("ascii"))
 
     def _munge_to_sequence(self, other, method):
         if isinstance(other, SkbSequence):
@@ -243,12 +243,11 @@ class SkbSequence(object):
 
     @classproperty
     def _validation_mask(cls):
-        # TODO These masks could be defined (as literals) on each concrete
-        # object. For now, memoize!
         if cls.__validation_mask is None:
             cls.__validation_mask = np.invert(np.bincount(
-                np.fromstring(''.join(cls.alphabet), dtype=np.uint8),
-                minlength=cls._number_of_extended_ascii_codes).astype(bool))
+                np.frombuffer(''.join(cls.alphabet).encode('utf-8'), dtype=np.uint8),
+                minlength=cls._number_of_extended_ascii_codes
+            ).astype(bool))
         return cls.__validation_mask
 
     @classproperty
